@@ -43,6 +43,7 @@ public class LemonApplicationContext {
                         clazz = classLoader.loadClass(className);
                         if (clazz.isAnnotationPresent(Component.class)) {
                             // 表示当前这个类是一个Bean
+                            //解析类，判断当前bean是单例bean，还是prototype的bean
                         }
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();

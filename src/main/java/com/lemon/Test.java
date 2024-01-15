@@ -11,6 +11,8 @@ public class Test {
         LemonApplicationContext applicationContext = new LemonApplicationContext(AppConfig.class);
 
         Object userService = applicationContext.getBean("userService");
+        Object userService1 = applicationContext.getBean("userService");
+        Object userService2 = applicationContext.getBean("userService");
 
     }
 }
