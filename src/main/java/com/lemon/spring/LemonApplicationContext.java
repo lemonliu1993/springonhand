@@ -1,5 +1,7 @@
 package com.lemon.spring;
 
+import com.lemon.service.BeanNameAware;
+
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -29,13 +31,13 @@ public class LemonApplicationContext {
             String beanName = entry.getKey();
             BeanDefinition beanDefinition = entry.getValue();
             if (beanDefinition.getScope().equals("singleton")) {
-                Object bean = createBean(beanDefinition);//创建bean
+                Object bean = createBean(beanName, beanDefinition);//创建bean
                 singletonObjects.put(beanName, bean);
             }
         }
     }
 
-    public Object createBean(BeanDefinition beanDefinition) {
+    public Object createBean(String beanName, BeanDefinition beanDefinition) {
         Class clazz = beanDefinition.getClazz();
         try {
             Object instance = clazz.getDeclaredConstructor().newInstance();
@@ -47,6 +49,10 @@ public class LemonApplicationContext {
                     declaredField.setAccessible(true);
                     declaredField.set(instance, bean);
                 }
+            }
+
+            if (instance instanceof BeanNameAware) {
+                ((BeanNameAware) instance).setBeanName(beanName);
             }
 
 
@@ -129,7 +135,7 @@ public class LemonApplicationContext {
                 return o;
             } else {
                 //创建Bean对象
-                Object bean = createBean(beanDefinition);
+                Object bean = createBean(beanName, beanDefinition);
                 return bean;
             }
         } else {

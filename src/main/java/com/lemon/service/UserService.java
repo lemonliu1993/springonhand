@@ -9,12 +9,20 @@ import com.lemon.spring.Scope;
  */
 @Component("userService")
 @Scope("singleton")
-public class UserService {
+public class UserService implements BeanNameAware {
 
     @Autowired
     private OrderService orderService;
 
-    public void test(){
+    private String beanName;
+
+    public void test() {
         System.out.println(orderService);
+        System.out.println(beanName);
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
     }
 }
