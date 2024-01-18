@@ -2,6 +2,7 @@ package com.lemon.service;
 
 import com.lemon.spring.Autowired;
 import com.lemon.spring.Component;
+import com.lemon.spring.InitializingBean;
 import com.lemon.spring.Scope;
 
 /**
@@ -9,7 +10,7 @@ import com.lemon.spring.Scope;
  */
 @Component("userService")
 @Scope("singleton")
-public class UserService implements BeanNameAware {
+public class UserService implements InitializingBean {
 
     @Autowired
     private OrderService orderService;
@@ -21,8 +22,15 @@ public class UserService implements BeanNameAware {
         System.out.println(beanName);
     }
 
+//    @Override
+//    public void setBeanName(String name) {
+//        this.beanName = name;
+//    }
+
+
     @Override
-    public void setBeanName(String name) {
-        this.beanName = name;
+    public void afterPropertiesSet() throws Exception {
+
+        System.out.println("xxx");
     }
 }

@@ -51,8 +51,15 @@ public class LemonApplicationContext {
                 }
             }
 
+            //  Aware回调
             if (instance instanceof BeanNameAware) {
                 ((BeanNameAware) instance).setBeanName(beanName);
+            }
+
+            //  初始化
+            if( instance instanceof InitializingBean){
+                ((InitializingBean) instance).afterPropertiesSet();
+
             }
 
 
@@ -64,6 +71,8 @@ public class LemonApplicationContext {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
