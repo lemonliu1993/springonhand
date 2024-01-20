@@ -17,6 +17,8 @@ public class UserService implements InitializingBean {
 
     private String beanName;
 
+    private String name;
+
     public void test() {
         System.out.println(orderService);
         System.out.println(beanName);
@@ -32,5 +34,13 @@ public class UserService implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
 
         System.out.println("xxx");
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

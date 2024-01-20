@@ -7,6 +7,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,6 +21,7 @@ public class LemonApplicationContext {
 
     private ConcurrentHashMap<String, Object> singletonObjects = new ConcurrentHashMap<>();  //单例池
     private ConcurrentHashMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
+    private List<BeanPostProcessor> beanPostProcessorList = new ArrayList<>();
 
     public LemonApplicationContext(Class configClass) {
         this.configClass = configClass;
@@ -56,12 +59,19 @@ public class LemonApplicationContext {
                 ((BeanNameAware) instance).setBeanName(beanName);
             }
 
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                instance = beanPostProcessor.postProcessBeforeInitialization(instance, beanName);
+            }
+
             //  初始化
-            if( instance instanceof InitializingBean){
+            if (instance instanceof InitializingBean) {
                 ((InitializingBean) instance).afterPropertiesSet();
 
             }
 
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                instance = beanPostProcessor.postProcessAfterInitialization(instance, beanName);
+            }
 
             return instance;
         } catch (InstantiationException e) {
@@ -108,6 +118,13 @@ public class LemonApplicationContext {
                             // 表示当前这个类是一个Bean
                             //解析类，判断当前bean是单例bean，还是prototype的bean
                             // ---> BeanDefinition
+
+                            //isAssignableFrom 判断一个类是不是实现了接口
+                            if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                                BeanPostProcessor instance = (BeanPostProcessor) clazz.getDeclaredConstructor().newInstance();
+                                beanPostProcessorList.add(instance);
+                            }
+
                             Component componentAnnotation = clazz.getDeclaredAnnotation(Component.class);
                             String beanName = componentAnnotation.value();
 
@@ -125,6 +142,14 @@ public class LemonApplicationContext {
 
                         }
                     } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
 
