@@ -1,5 +1,6 @@
 package com.lemon;
 
+import com.lemon.service.UserInterface;
 import com.lemon.service.UserService;
 import com.lemon.service.UserServiceImpl;
 import com.lemon.spring.LemonApplicationContext;
@@ -18,7 +19,8 @@ public class Test {
 //        UserService userService1 = (UserService)applicationContext.getBean("userService");
 //        Object userService2 = applicationContext.getBean("userService");
 //        userService1.test();
-        UserServiceImpl userService = (UserServiceImpl) applicationContext.getBean("userServiceImpl");
+        // 这里AOP的必须是接口，不然会报错 java.lang.ClassCastException: com.sun.proxy.$Proxy5 cannot be cast to com.lemon.service.UserServiceImpl
+        UserInterface userService = (UserInterface) applicationContext.getBean("userServiceImpl");
         userService.test(); //1. 代理对象   2.业务test
 
     }
