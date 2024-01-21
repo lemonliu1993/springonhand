@@ -8,9 +8,9 @@ import com.lemon.spring.Scope;
 /**
  * Created by lemoon on 2024/1/13 10:39
  */
-@Component("userService")
+@Component("userServiceImpl")
 @Scope("singleton")
-public class UserService implements InitializingBean {
+public class UserServiceImpl implements UserInterface {
 
     @Autowired
     private OrderService orderService;
@@ -19,21 +19,10 @@ public class UserService implements InitializingBean {
 
     private String name;
 
+    @Override
     public void test() {
         System.out.println(orderService);
         System.out.println(beanName);
-    }
-
-//    @Override
-//    public void setBeanName(String name) {
-//        this.beanName = name;
-//    }
-
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-
-//        System.out.println("xxx");
     }
 
     public String getName() {

@@ -1,6 +1,7 @@
 package com.lemon;
 
 import com.lemon.service.UserService;
+import com.lemon.service.UserServiceImpl;
 import com.lemon.spring.LemonApplicationContext;
 
 /**
@@ -14,10 +15,11 @@ public class Test {
 //        System.out.println(applicationContext.getBean("userService"));
 //        System.out.println(applicationContext.getBean("userService"));
 //        System.out.println(applicationContext.getBean("userService"));
-        UserService userService1 = (UserService)applicationContext.getBean("userService");
+//        UserService userService1 = (UserService)applicationContext.getBean("userService");
 //        Object userService2 = applicationContext.getBean("userService");
-        userService1.test();
-
+//        userService1.test();
+        UserServiceImpl userService = (UserServiceImpl) applicationContext.getBean("userServiceImpl");
+        userService.test(); //1. 代理对象   2.业务test
 
     }
 }

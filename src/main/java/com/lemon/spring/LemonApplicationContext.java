@@ -91,7 +91,7 @@ public class LemonApplicationContext {
     private URL scan(Class configClass) {
         ComponentScan componentScanAnnotation = (ComponentScan) configClass.getDeclaredAnnotation(ComponentScan.class);
         String path = componentScanAnnotation.value();  //扫描路径
-        System.out.println(path);
+//        System.out.println(path);
 
         //扫描
         //Bootstrap --->jre/lib
@@ -103,14 +103,14 @@ public class LemonApplicationContext {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (File f : files) {
-                System.out.println(f);
+//                System.out.println(f);
 //                Class<?> aClass = classLoader.loadClass("com.lemon.service.UserService");
                 String fileName = f.getAbsolutePath();
                 if (fileName.endsWith(".class")) {
                     //是类文件才进行处理
                     String className = fileName.substring(fileName.indexOf("com"), fileName.indexOf(".class"));
                     className = className.replace("/", ".");
-                    System.out.println(className);
+//                    System.out.println(className);
                     Class<?> clazz = null;
                     try {
                         clazz = classLoader.loadClass(className);
